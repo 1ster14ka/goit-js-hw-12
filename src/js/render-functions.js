@@ -5,6 +5,9 @@ import iziToast from 'izitoast';
 
 import 'izitoast/dist/css/iziToast.min.css';
 
+import { fetchImages, pages, maxPhoto } from './pixabay-api';
+import { closeBtn } from '../main';
+
 const div = document.querySelector('.wrapp');
 
 const list = document.querySelector('.list');
@@ -14,6 +17,20 @@ export function renderImages(data, lightbox) {
     list.innerHTML = '';
     return undefined;
   } else {
+    let max = Math.ceil(data.totalHits / maxPhoto);
+    console.log(max);
+    if (max === pages) {
+      closeBtn();
+
+      // console.log('res');
+
+      iziToast.error({
+        message: "We're sorry, but you've reached the end of search results.",
+        messageSize: 18,
+        messageLineHeight: 30,
+        position: 'topRight',
+      });
+    }
     hideLoading();
     const smallImg = data.hits
       .map(
@@ -36,11 +53,14 @@ export function renderImages(data, lightbox) {
           </div></li>`
       )
       .join('');
-    list.innerHTML = smallImg;
+
+    if (pages !== 1) {
+      list.insertAdjacentHTML('beforeend', smallImg);
+    } else {
+      list.innerHTML = smallImg;
+    }
 
     lightbox.refresh();
-    console.log(data.total);
-
     return true;
   }
 }

@@ -39,11 +39,14 @@ form.addEventListener('submit', event => {
     fetchImages(userText)
       .then(data => {
         if (renderImages(data, lightbox)) {
+          console.log(data);
+
           return renderImages(data, lightbox);
         } else {
           throw new Error('Test error!');
         }
       })
+      // .then(users => console.log(users))
       .catch(error => {
         iziToast.error({
           message:

@@ -39,6 +39,8 @@ export function renderImages(data, lightbox) {
     list.innerHTML = smallImg;
 
     lightbox.refresh();
+    console.log(data.total);
+
     return true;
   }
 }
